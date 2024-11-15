@@ -4,7 +4,6 @@
 
 body {
   font-family: "Nunito", sans-serif;
-  background-color: #212121;
 }
 
 .card {
@@ -25,4 +24,18 @@ button {
 
 .link {
   @apply text-[#01669e] underline m-auto text-xs;
+}
+.task {
+  @apply flex flex-col space-y-2 relative border-b-2 pb-2;
+
+  h2 {
+    @apply text-xl font-bold text-[#212121];
+  }
+
+  p {
+    @apply text-[#212121];
+  }
+  button {
+    @apply bg-red-500 text-white rounded-md p-2 relative flex justify-center sm:absolute top-0 right-0 shadow-lg; 
+  }
 }
