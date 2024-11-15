@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: "Nunito", sans-serif;
+  background-color: #212121;
+}
+
+.card {
+  @apply bg-white shadow-2xl rounded-lg p-10 flex flex-col space-y-7 w-11/12 max-w-80;
+}
+
+input {
+  @apply border border-gray-300 rounded-md p-2;
+}
+
+h1 {
+  @apply text-3xl font-bold text-center text-[#212121];
+}
+
+button {
+  @apply bg-[#01669e] text-white rounded-md p-2;
+}
+
+.link {
+  @apply text-[#01669e] underline m-auto text-xs;
+}
