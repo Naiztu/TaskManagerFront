@@ -15,7 +15,7 @@ export interface IPropsTask {
  * @returns The `token` function is returning the data from the response of the POST request made to
  * the "/task" endpoint using the `apiClient`.
  */
-export async function token({ title, description, token }: IPropsTask) {
+export async function createTask({ title, description, token }: IPropsTask) {
   const response = await apiClient.post(
     "/tasks",
     {
@@ -62,7 +62,7 @@ export async function getTasks(token: string) {
  * @returns The function `deleteTask` is returning the data from the response of the API call after
  * deleting the task with the specified `id` and using the provided `token` for authorization.
  */
-export async function deleteTask(id: number, token: string) {
+export async function deleteTask({ id, token }: { id: number; token: string }) {
   const response = await apiClient.delete(`/tasks/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
