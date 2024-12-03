@@ -36,6 +36,11 @@ button {
     @apply text-[#212121];
   }
   button {
-    @apply bg-red-500 text-white rounded-md p-2 relative flex justify-center sm:absolute top-0 right-0 shadow-lg; 
+    @apply bg-red-500 text-white rounded-md p-2 relative flex justify-center sm:absolute top-0 right-0 shadow-lg;
   }
+}
+
+.shadow-img {
+  -webkit-filter: drop-shadow(2px 2px 2px #222);
+  filter: drop-shadow(2px 2px 2px #222);
 }

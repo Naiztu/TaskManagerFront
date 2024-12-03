@@ -5,6 +5,7 @@ import { useAppDispatch } from "../../redux/hooks";
 import { setAccessToken, setUser } from "../../redux/slices/auth.slice";
 import { useRef } from "react";
 import Swal from "sweetalert2";
+import Logo from "../../assets/logo.png";
 
 export default function Login() {
   const dispatch = useAppDispatch();
@@ -46,8 +47,8 @@ export default function Login() {
   return (
     <>
       <div className=" flex justify-center items-center min-h-[100vh] ">
-        <div  className="card">
-          <h1>Login</h1>
+        <div className="card">
+          <img src={Logo} className="shadow-img" />
           <input type="text" placeholder="Email" ref={refEmail} />
           <input type="password" placeholder="Password" ref={refPassword} />
           <div className="flex flex-col space-y-3">

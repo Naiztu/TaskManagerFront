@@ -1,4 +1,3 @@
-import { apiClient } from "./apiClient";
 export interface IPropsAuth {
   email: string;
   password: string;
@@ -15,11 +14,14 @@ export interface IPropsAuth {
  * "/login" endpoint.
  */
 export async function login({ email, password }: IPropsAuth) {
-  const response = await apiClient.post("/auth/login", {
-    email,
-    password,
-  });
-  return response.data;
+  return {
+    user: {
+      id: 1,
+      email,
+      password,
+    },
+    token: "token",
+  };
 }
 
 /**
@@ -33,9 +35,12 @@ export async function login({ email, password }: IPropsAuth) {
  * the "/register" endpoint using the `apiClient`.
  */
 export async function register({ email, password }: IPropsAuth) {
-  const response = await apiClient.post("/auth/register", {
-    email,
-    password,
-  });
-  return response.data;
+  return {
+    user: {
+      id: 1,
+      email,
+      password,
+    },
+    token: "token",
+  };
 }

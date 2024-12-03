@@ -1,103 +1,72 @@
 import { Navigate } from "react-router-dom";
 import { useAppSelector } from "../../redux/hooks";
 import { selectAccessToken } from "../../redux/slices/auth.slice";
-import Task from "./components/Task";
-import { FaPlus } from "react-icons/fa6";
-import { useMutation, useQuery } from "react-query";
-import { createTask, getTasks, IPropsTask } from "../../services/task";
-import { TaskType } from "../../types/task.type";
-import { useEffect, useState } from "react";
-import Swal from "sweetalert2";
+import Searchbar from "../../components/Searchbar";
+import Carousel from "./components/Carousel";
 
 export default function Home() {
   const token = useAppSelector(selectAccessToken);
-  const [tasks, setTasks] = useState<TaskType[]>([]);
 
-  const { data, isLoading, refetch } = useQuery<{ tasks: TaskType[] }>(
-    "getTasks",
-    () => getTasks(token || "")
-  );
-  const { mutateAsync } = useMutation("createTask", createTask);
-
-  useEffect(() => {
-    if (data) setTasks(data.tasks);
-  }, [data]);
+  const data = [
+    {
+      name: "Flamingo Amanecer - Querétaro Kenia Os/ Yeri Mua/ Noa Sainz",
+      categories: ["Cultural"],
+      location:
+        "Centro de Congresos.B Josefa Vergara y Hernandez, Av. de las Artes, Paseo de las Artes 1531, 76090 Santiago de Querétaro, Qro",
+      price: "$1,500.00",
+      photos: [
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRi8ecZHc78kCKEAncw3RrnDXDgeOgV526GEt8lW_Roa4mAUnYm2b_fiOLCLT5eJcg6TPo&usqp=CAU",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnC1e6DFCUT7c65-GvnUdJTbNECUbQATJHEmscrTXm8gzOCY_xaRgxzQCSj_eSZsSsXB0&usqp=CAU",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8bIsJtiQXbAFzi_eeT76gaqOnrsOfAxRmgBp8XZsVBVdECKwy9LSLHx5BNMTXavq-vj8&usqp=CAU",
+      ],
+    },
+  
+    {
+      name: "Reunión Anual y Feria Comercial AICC México 2024",
+      categories: ["Networking", "Masterclass"],
+      location:
+        "Hotel Grand Fiesta Americana Querétaro. Prol. Bernardo Quintana 4050, Plaza Boulevares, 76160 Santiago de Querétaro, Qro.",
+      price: "$28,000.00",
+      photos: [
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNsZdrGI-vzyl6gZg4fJkKKhgRSzFf_7q7GWyWLL7WuSOCkAncB-w5MKLUbJEWsXYyUzM&usqp=CAU",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpv2EkRYQGgzinbgcBhNSSBmcrd3M9BZv79uaZt4kPNGis1uFI2CqaIG4RYPHax7g70Ic&usqp=CAU",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjxpYLKgWWjaYmKWS_B4VbSHEbrfvwVA-frzlydHicelOSpMNa2jweN69CmJsTPJJxOhA&usqp=CAU",
+      ],
+    },
+  ];
 
   if (!token) {
     return <Navigate to="/" />;
   }
 
-  const handleCreate = async () => {
-    let titleInput: HTMLInputElement;
-    let descriptionInput: HTMLInputElement;
-    const res = await Swal.fire<IPropsTask>({
-      title: "Create Form",
-      html: `
-        <input type="text" id="title" class="swal2-input" placeholder="Title">
-        <input type="text" id="description" class="swal2-input" placeholder="Description">
-      `,
-      confirmButtonText: "Save",
-      focusConfirm: false,
-      didOpen: () => {
-        const popup = Swal.getPopup()!;
-        titleInput = popup.querySelector("#title") as HTMLInputElement;
-        descriptionInput = popup.querySelector(
-          "#description"
-        ) as HTMLInputElement;
-        titleInput.onkeyup = (event) =>
-          event.key === "Enter" && Swal.clickConfirm();
-        descriptionInput.onkeyup = (event) =>
-          event.key === "Enter" && Swal.clickConfirm();
-      },
-      preConfirm: () => {
-        const title = titleInput.value;
-        const description = descriptionInput.value;
-        if (!title || !description) {
-          Swal.showValidationMessage(`Please enter title and description`);
-        }
-
-        return { title, description };
-      },
-    });
-    try {
-      await mutateAsync({
-        description: res.value?.description || "",
-        title: res.value?.title || "",
-        token,
-      });
-      Swal.fire({
-        title: "Listo",
-        icon: "success",
-      });
-      refetch();
-    } catch (err) {
-      console.log(err);
-      if (res.isConfirmed)
-        Swal.fire({
-          title: "Error!",
-          icon: "error",
-        });
-    }
-  };
-
   return (
     <div className="px-5 max-w-[800px] m-auto">
-      <div className="pt-11 border-b-2 pb-5 px-5 sm:space-x-6 flex flex-col sm:flex-row sm:justify-between">
-        <h1 className="text-5xl">Home</h1>
-        <button
-          onClick={handleCreate}
-          className="px-6 flex justify-center items-center space-x-2 mt-2 mx-auto"
-        >
-          <p>Create new task</p> <FaPlus />
-        </button>
+      <div className="pt-11 pb-5 px-5">
+        <Searchbar/>
       </div>
 
       <div>
-        <div className="flex flex-col space-y-4 pt-7">
-          {isLoading && <p>{"Loading..."}</p>}
-          {tasks &&
-            tasks.map((task: TaskType) => <Task {...task} refetch={refetch} />)}
-        </div>
+        {data.map((event, index) => (
+          <div
+          
+            key={index}
+            className="bg-white shadow-lg rounded-lg p-4 w-full mx-auto"
+          >
+            <div>
+              <Carousel photos={event.photos} />
+            </div>
+            <div className="mt-4">
+              <p className="text-lg font-semibold text-gray-800">
+                {event.name}
+              </p>
+              <p className="mt-2 text-gray-600 ">
+                {event.categories.join(", ")}
+              </p>
+              <p className="mt-2 text-gray-600">{event.location}</p>
+              <p className="mt-2 text-gray-600">{event.price}</p>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
